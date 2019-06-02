@@ -37,7 +37,8 @@ minimum-credit? 500 units
 
 commands
 Time goes by.
-Customer 1 wants to create an account of type 1. Customer 1 wants to start with 3000000 Tomans.
+Customer 1 wants to create an account of type 1.
+Customer 1 wants to start with 3000000 Tomans.
 Customer 1 adds 1000000 Tomans to his account.
 Customer 1 requests renewal.
 Customer 1 writes a cheque for 2000000 Tomans.
