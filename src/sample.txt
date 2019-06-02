@@ -1,0 +1,50 @@
+
+
+
+
+setup
+Account type 1
+current-account? true
+bank-fee? 3000 Tomans
+minimum-deposit? 1000000 Tomans
+
+
+monthly? true
+period? 100 months
+
+
+renewable? false
+interest-rate? 22 percent
+credit? 100 units
+variablity? true
+span-for-increase? 40 months
+increase-rate? 1.2 percent
+has-cheque? false
+has-card? false
+transfer-fee? 300 Tomans
+
+Loan type 1
+
+
+loan-amount? 50000000 Tomans
+blocking-money? 55000000 Tomans
+return-span? 60 months
+interest? 26 percent
+last-loan? 100 months
+minimum-credit? 500 units
+
+
+
+commands
+Time goes by.
+Customer 1 wants to create an account of type 1. Customer 1 wants to start with 3000000 Tomans.
+Customer 1 adds 1000000 Tomans to his account.
+Customer 1 requests renewal.
+Customer 1 writes a cheque for 2000000 Tomans.
+Customer 1 spends 70000 Tomans via his card.
+Customer 1 transfers 500000 Tomans.
+Customer 1 withdraws 120000 Tomans from his account.
+Customer 1 closes his account.
+Customer 1 requests a loan of type 1.
+Customer 1 pays 1000000 Tomans of his debt.
+Customer 1 withdraws the loan.
