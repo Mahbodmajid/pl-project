@@ -17,7 +17,7 @@
 
 (define program-lines
   (remove-all ""
-              (map string-trim
+              (map string-normalize-spaces
                    (file->lines program-url #:mode'text))))
 
 (define extract-setup-commands

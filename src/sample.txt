@@ -6,7 +6,7 @@ setup
 Account type 1
 current-account? true
 bank-fee? 3000 Tomans
-minimum-deposit? 1000000 Tomans
+minimum-deposit?      1000000 Tomans
 
 
 monthly? true
@@ -14,7 +14,7 @@ period? 100 months
 
 
 renewable? false
-interest-rate? 22 percent
+interest-rate? 22        percent
 credit? 100 units
 variablity? true
 span-for-increase? 40 months
