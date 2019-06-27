@@ -2,8 +2,6 @@
 
 (require (lib "eopl.ss" "eopl"))
 
-(define program-url "sample/sample_input.txt")
-
 (require "program-to-setup-and-command.rkt")
 
 (define commands '())

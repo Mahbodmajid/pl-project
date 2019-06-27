@@ -1,5 +1,7 @@
 #lang racket
 
+(provide set-commands-setup!)
+
 (define program-url "sample/sample_input.txt")
 
 (define remove-all
@@ -51,5 +53,3 @@
      (set! c lcommands)
      (set! s lsetup))
      ]))
-
-(provide set-commands-setup!)
