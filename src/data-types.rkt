@@ -1,0 +1,50 @@
+#lang racket
+
+(require (lib "eopl.ss" "eopl"))
+
+(provide (all-defined-out))
+
+(define-datatype account-type account-type?
+  (a-account-type (account-id number?)
+                  (current-account boolean?)
+                  (bank-fee number?)
+                  (minimum-deposit number?)
+                  (monthly boolean?)
+                  (period number?)
+                  (renewable boolean?)
+                  (interest-rate number?)
+                  (credit number?)
+                  (variability boolean?)
+                  (span-for-increase number?)
+                  (increase-rate number?)
+                  (has-cheque boolean?)
+                  (has-card boolean?)
+                  (transfer-fee number?)))
+
+(define-datatype loan-type loan-type?
+  (no-loan)
+  (a-loan-type (loan-id number?)
+               (loan-amount number?)
+               (blocking-money number?)
+               (return-span number?)
+               (interest number?)
+               (last-loan number?)
+               (minimum-credit number?)
+               ))
+
+(define-datatype customer customer?
+  (a-customer (account account-type?)
+              (loan loan-type?)
+              (customer-id number?)
+              (initial-balance number?)
+              (balance number?)
+              (credit number?)
+              (interest-rate number?)
+              (year-counter number?)
+              (interest-rate-increase-counter number?)
+              (end-of-contract-month number?)
+              (last-loan-month number?)
+              (end-of-loan-month number?)
+              (debt number?)
+              )
+  )
