@@ -2,7 +2,7 @@
 
 (require (lib "eopl.ss" "eopl"))
 
-(define program-url "sample.txt")
+(define program-url "my_sample.txt")
 
 
 (define remove-all
