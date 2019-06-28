@@ -38,7 +38,7 @@
               (contract-start-month number?)
               (account-type-id number?)
               (history (list-of number?))
-              ; (balance number?) (car history)
+              (balance number?)
               ; (blocked-balance number?) computable from debts
               (last-withdraw-month number?)
               (credit number?)
