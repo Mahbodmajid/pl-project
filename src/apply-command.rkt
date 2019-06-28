@@ -112,14 +112,14 @@ require("loan-observers.rkt")
 ; equiv to spend
 (define transfer
   (lambda (customer amount account-types loan-types month)
-    (spend customer amount month)
+    (spend customer amount account-types loan-types month)
     )
   )
 
 ; equiv to spend
 (define withdraw
   (lambda (customer amount account-types loan-types month)
-    (spend customer amount month)
+    (spend customer amount account-types loan-types month)
     )
   )
 
