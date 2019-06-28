@@ -3,6 +3,8 @@
 (require (lib "eopl.ss" "eopl"))
 (require "data-types.rkt")
 
+(provide (all-defined-out))
+
 (define loan-type->loan-id
   (lambda (loan)
     (cases loan-type loan
