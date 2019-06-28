@@ -5,6 +5,7 @@
 (require "data-types.rkt")
 (require "utils.rkt")
 (require "setup-to-account-loan-objects.rkt")
+(require "commands-translator.rkt")
 
 (define commands '())
 (define setup '())
