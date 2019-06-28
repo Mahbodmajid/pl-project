@@ -18,6 +18,8 @@ setup
 (define account-types '())
 (define loan-types '())
 
+(define )
+
 (set-account-loan-types! account-types loan-types setup)
 account-types
 loan-types

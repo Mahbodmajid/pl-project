@@ -38,13 +38,13 @@
               (contract-start-month number?)
               (account-type-id number?)
               (history (list-of number?))
-              (free-balance number?)
-              (blocked-balance number?)
+              ; (balance number?) (car history)
+              ; (blocked-balance number?) computable from debts
               (last-withdraw-month number?)
               (credit number?)
               (new-interest-rate number?) ;(for variable yearly interest)
               (interest-rate number?)
-              ; loan requests are not handled
+              (loan-amount-to-add number?)
               (debts (list-of debt?))))
 
 (define-datatype debt debt?
