@@ -1,7 +1,6 @@
 #lang racket
 
 (require "program-to-setup-and-command.rkt")
-
 (require "data-types.rkt")
 (require "utils.rkt")
 (require "setup-to-account-loan-objects.rkt")
@@ -23,7 +22,8 @@ setup
 account-types
 loan-types
 
-(define all-customers '())
+; '(list-of-all-customers month)
+(define all-customers-month '(() 0)
 
 (define apply-commands
     (lambda (cs) 
@@ -32,7 +32,7 @@ loan-types
             (let ([current (translate-command (car cs))]
                 [rest (cdr cs)])
                 (begin
-                    (set! all-customers (apply-command all-customers account-types loan-types))
+                    (set! all-customers-month (apply-command all-customers-month account-types loan-types))
                     (apply-commands rest)
                 )
             )
