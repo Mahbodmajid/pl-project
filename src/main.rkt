@@ -31,7 +31,10 @@ loan-types
             'finish
             (let ([current (translate-command (car cs))]
                 [rest (cdr cs)])
-                (set! all-customers (apply-command all-customers account-types loan-types))
+                (begin
+                    (set! all-customers (apply-command all-customers account-types loan-types))
+                    (apply-commands rest)
+                )
             )
         )
     )
