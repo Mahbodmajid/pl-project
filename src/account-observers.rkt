@@ -158,3 +158,21 @@
         )
     )
 )
+
+(define account->minimum-opening
+    (lambda (account)
+        (+ (account->bank-fee account) (account->minimum-deposit account))
+    )
+)
+
+(define money-after-opening 
+    (lambda (account money)
+        (- money (account->bank-fee account))
+    )
+)
+
+(define can-open-account
+    (lambda (account money)
+        (>= money (account->minimum-opening account))
+    )
+)

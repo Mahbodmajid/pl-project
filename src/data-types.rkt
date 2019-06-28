@@ -44,7 +44,7 @@
               (credit number?)
               (new-interest-rate number?) ;(for variable yearly interest)
               (interest-rate number?)
-              (loan-amount-to-add number?)
+              (loan-amount-to-add number?) ;(for the stacked amount of loans that are to be added at the beginng of the next month)
               (debts (list-of debt?))))
 
 (define-datatype debt debt?

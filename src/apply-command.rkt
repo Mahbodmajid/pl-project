@@ -1,5 +1,10 @@
 #lang racket
 
+require("data-types.rkt")
+require("customer-observers.rkt")
+require("account-observers.rkt")
+require("loan-observers.rkt")
+
 (define consif 
   (lambda (e l)
     (if e (cons e l) l)))
@@ -22,11 +27,62 @@
     )
   )
 
-(define new-account ;returns #f if not valid o.w. new-account's object
-  (lambda (customer-id account-type-id initial-money account-types loan-types month)
-    #f
+(define find-account-type
+  (lambda (account-type-id account-types) 
+    (let ([account-ids (map account->account-id account-types)])
+      (let ([account-index (index-of account-ids customer-id)])
+        (if account-index
+          (list-ref account-types account-index)
+          #f
+          )
+        )
+      )
     )
   )
+
+(define find-loan-type
+  (lambda (loan-type-id loan-types) 
+    (let ([loan-ids (map loan->loan-id loan-types)])
+      (let ([loan-index (index-of loan-ids loan-id)])
+        (if loan-index
+          (list-ref loan-types loan-index)
+          #f
+          )
+        )
+      )
+    )
+  )
+
+
+
+(define new-account 
+  ; customer constructor
+  ; returns #f if not valid o.w. new-account's object
+  (lambda (customer-id account-type-id initial-money account-types loan-types month)
+    (let ([(account (find-account-type account-type-id account-types))])
+      (let ([(can-open (can-open-account account money))]
+            [(money-after (money-after-opening account money))]
+            [(interest-rate (account->interest-rate account))])
+            (if can-open
+            (a-customer customer-id
+                        month
+                        month
+                        account-type-id
+                        '()
+                        money-after
+                        month
+                        0
+                        interest-rate
+                        interest-rate
+                        0
+                        '()
+            )
+            #f
+            )
+      )
+    )
+  )
+)
 
 (define add-money
   (lambda (customer amount account-types loan-types month)
