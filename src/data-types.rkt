@@ -5,7 +5,7 @@
 (provide (all-defined-out))
 
 (define-datatype account-type account-type?
-  (a-account-type (account-id number?)
+  (a-account-type (account-id string?)
                   (current-account boolean?)
                   (bank-fee number?)
                   (minimum-deposit number?)
@@ -23,7 +23,7 @@
 
 (define-datatype loan-type loan-type?
   (no-loan)
-  (a-loan-type (loan-id number?)
+  (a-loan-type (loan-id string?)
                (loan-amount number?)
                (blocking-money number?)
                (return-span number?)
@@ -33,10 +33,10 @@
                ))
 
 (define-datatype customer customer?
-  (a-customer (customer-id number?)
+  (a-customer (customer-id string?)
               (start-month number?)
               (contract-start-month number?)
-              (account-type-id number?)
+              (account-type-id string?)
               (history (list-of number?))
               (initial-balance (number?))
               (balance number?)
@@ -48,7 +48,7 @@
               (debts (list-of debt?))))
 
 (define-datatype debt debt?
-  (a-debt (loan-type-id number?)
+  (a-debt (loan-type-id string?)
           (start-month number?)
           (paid number?)
           (done boolean?)
