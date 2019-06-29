@@ -32,13 +32,7 @@
 (define find-account-type
   (lambda (account-type-id account-types) 
     (let ([account-ids (map account->account-id account-types)])
-    (display 'ids)
-    (display account-ids)
-    (display 'looking-for)
-    (display account-type-id)
       (let ([account-index (index-of account-ids account-type-id)])
-      (display 'index)
-        (display account-index)
         (if account-index
             (list-ref account-types account-index)
             #f
@@ -67,17 +61,11 @@
   ; customer constructor
   ; returns #f if not valid o.w. new-account's object
   (lambda (customer-id account-type-id initial-money account-types loan-types month)
-    (display 'new-account)
     (let ([account (find-account-type account-type-id account-types)])
-      (display account-type-id)
-      (display account-types)
-      (display account)
       (if account
           (let ([can-open (can-open-account account initial-money)]
                 [money-after (money-after-opening account initial-money)]
                 [interest-rate (account->interest-rate account)])
-            (display month)
-            (display can-open)
             (if can-open
                 (a-customer customer-id
                             month

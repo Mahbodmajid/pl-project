@@ -32,7 +32,6 @@ loan-types
         (let ([current (translate-command (car cs))]
               [rest (cdr cs)])
           (begin
-            (display all-customers-month)
             (set! all-customers-month (apply-command current all-customers-month account-types loan-types))
             (apply-commands rest)
             )
