@@ -4,6 +4,8 @@
 (require "customer-observers.rkt")
 (require "account-observers.rkt")
 (require "loan-observers.rkt")
+(require "customer-setters.rkt")
+(require "debts-setters.rkt")
 
 (provide apply-command)
 
@@ -90,26 +92,99 @@
   )
 
 (define add-money
-  (lambda (customer amount account-types loan-types month)
-    customer
+  (lambda (my-customer amount account-types loan-types month)
+    (customer-balance-setter my-customer (+ (customer->balance my-customer) amount))
     )
   )
 
+(define is-valid-contract?
+  (lambda my-customer account
+    (> (- month (customer->contract-start-month my-customer)) (account->period account))
+    )
+  )
+    
 (define renewal
   (lambda (customer account-types loan-types month)
-    customer
+    (let ((account-id (customer->account-type-id customer))
+          (account (find-account-type account-id account-types)))
+      (if account
+          (if (and account->renewable (is-valid-contract? customer account))
+              (customer-contract-start-month customer month)
+              customer)
+          (raise-argument-error 'renewal "customer?" my-customer)
+          )
+      )
+    )
+  )
+
+(define blocked-money-amount
+  (lambda (my-debt loan-types)
+    (if (my-debt->done)
+        0
+        (let ((my-loan (find-loan-type my-debt->loan-type-id loan-types)))
+          (loan-type->blocked-money my-loan))
+        )
+    )
+  )
+                        
+(define sum-of-blocked-money
+  (lambda (my-customer loan-type)
+    (let ((my-debts (customer->debts my-customer))
+          (blocked-money-list (map blocked-money-amount my-debts)))
+      (+ blocked-money-list)
+      )
+    )
+  )
+
+(define free-money
+  (lambda (my-customer account)
+    (- (customer->balance my-customer) (+ (account->minimum-deposit account) (sum-of-blocked-money my-customer loan-types)))
     )
   )
 
 (define write-cheque
-  (lambda (customer amount account-types loan-types month)
-    customer
+  (lambda (my-customer amount account-types loan-types month)
+    (let ((account-id (customer->account-type-id customer))
+          (account (find-account-type account-id account-types)))
+      (if (account->has-cheque)
+          (let ((free-amount (free-money my-customer account)))
+            (if (>= free-amount amount)
+                (customer-last-decrease-month-setter (customer-balance-setter my-customer (- (customer->balance my-customer) amount)) month)
+                my-customer
+                )
+            )
+          (customer-credit-setter my-customer (- (/ (account->credit account) 2)))
+          )
+      )
     )
   )
 
 (define spend
   (lambda (customer amount account-types loan-types month)
-    customer
+    (let ((account-id (customer->account-type-id customer))
+          (account (find-account-type account-id account-types))
+          (valid (is-valid-contract? my-customer account)))
+      (if (account->has-card)
+          (if valid
+              (let ((free-amount (free-money my-customer account)))
+                (if (>= free-amount amount)
+                    (customer-last-decrease-month-setter (customer-balance-setter my-customer (- (customer->balance my-customer) amount)) month)
+                    my-customer
+                    )
+                )
+              (let ((free-amount (- (customer->balance my-customer) (sum-of-blocked-money my-customer loan-types))))
+                (if (>= free-amount amount)
+                    (customer-last-decrease-month-setter (customer-balance-setter my-customer (- (customer->balance my-customer) amount)) month)
+                    my-customer
+                    )
+                )
+            )
+          (if valid
+              (customer-credit-setter my-customer (- (/ (account->credit account) 2)))
+              my-customer
+          )
+          )
+      )
     )
   )
 
