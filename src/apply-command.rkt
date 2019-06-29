@@ -1,9 +1,9 @@
 #lang racket
 
-require("data-types.rkt")
-require("customer-observers.rkt")
-require("account-observers.rkt")
-require("loan-observers.rkt")
+(require "data-types.rkt")
+(require "customer-observers.rkt")
+(require "account-observers.rkt")
+(require "loan-observers.rkt")
 
 (define consif 
   (lambda (e l)
