@@ -38,13 +38,13 @@
               (contract-start-month number?)
               (account-type-id number?)
               (history (list-of number?))
+              (initial-balance (number?))
               (balance number?)
               ; (blocked-balance number?) computable from debts
-              (last-withdraw-month number?)
+              (last-decrease-month number?)
               (credit number?)
               (new-interest-rate number?) ;(for variable yearly interest)
               (interest-rate number?)
-              (loan-amount-to-add number?) ;(for the stacked amount of loans that are to be added at the beginng of the next month)
               (debts (list-of debt?))))
 
 (define-datatype debt debt?
