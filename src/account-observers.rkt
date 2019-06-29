@@ -3,6 +3,8 @@
 (require (lib "eopl.ss" "eopl"))
 (require "data-types.rkt")
 
+(provide (all-defined-out))
+
 (define account->account-id 
     (lambda (account) 
         (cases account-type account

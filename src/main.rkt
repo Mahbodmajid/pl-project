@@ -5,7 +5,7 @@
 (require "utils.rkt")
 (require "setup-to-account-loan-objects.rkt")
 (require "commands-translator.rkt")
-(require "apply-command")
+(require "apply-command.rkt")
 
 (define commands '())
 (define setup '())
@@ -26,20 +26,21 @@ loan-types
 (define all-customers-month '(() 0))
 
 (define apply-commands
-    (lambda (cs) 
-        (if (null? cs)
-            'finish
-            (let ([current (translate-command (car cs))]
-                [rest (cdr cs)])
-                (begin
-                    (set! all-customers-month (current apply-command all-customers-month account-types loan-types))
-                    (apply-commands rest)
-                )
+  (lambda (cs) 
+    (if (null? cs)
+        'finish
+        (let ([current (translate-command (car cs))]
+              [rest (cdr cs)])
+          (begin
+            (display all-customers-month)
+            (set! all-customers-month (apply-command current all-customers-month account-types loan-types))
+            (apply-commands rest)
             )
+          )
         )
     )
-)
+  )
 
 (apply-commands commands)
 
-all-customers
+all-customers-month

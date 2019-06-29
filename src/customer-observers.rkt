@@ -3,6 +3,8 @@
 (require (lib "eopl.ss" "eopl"))
 (require "data-types.rkt")
 
+(provide (all-defined-out))
+
 (define customer->customer-id 
     (lambda (my-customer) 
         (cases customer my-customer

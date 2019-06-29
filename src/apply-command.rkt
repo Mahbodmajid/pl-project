@@ -5,6 +5,8 @@
 (require "account-observers.rkt")
 (require "loan-observers.rkt")
 
+(provide apply-command)
+
 (define consif 
   (lambda (e l)
     (if e (cons e l) l)))
@@ -30,11 +32,17 @@
 (define find-account-type
   (lambda (account-type-id account-types) 
     (let ([account-ids (map account->account-id account-types)])
-      (let ([account-index (index-of account-ids customer-id)])
+    (display 'ids)
+    (display account-ids)
+    (display 'looking-for)
+    (display account-type-id)
+      (let ([account-index (index-of account-ids account-type-id)])
+      (display 'index)
+        (display account-index)
         (if account-index
-          (list-ref account-types account-index)
-          #f
-          )
+            (list-ref account-types account-index)
+            #f
+            )
         )
       )
     )
@@ -43,11 +51,11 @@
 (define find-loan-type
   (lambda (loan-type-id loan-types) 
     (let ([loan-ids (map loan->loan-id loan-types)])
-      (let ([loan-index (index-of loan-ids loan-id)])
+      (let ([loan-index (index-of loan-ids loan-type-id)])
         (if loan-index
-          (list-ref loan-types loan-index)
-          #f
-          )
+            (list-ref loan-types loan-index)
+            #f
+            )
         )
       )
     )
@@ -59,30 +67,39 @@
   ; customer constructor
   ; returns #f if not valid o.w. new-account's object
   (lambda (customer-id account-type-id initial-money account-types loan-types month)
-    (let ([(account (find-account-type account-type-id account-types))])
-      (let ([(can-open (can-open-account account money))]
-            [(money-after (money-after-opening account money))]
-            [(interest-rate (account->interest-rate account))])
+    (display 'new-account)
+    (let ([account (find-account-type account-type-id account-types)])
+      (display account-type-id)
+      (display account-types)
+      (display account)
+      (if account
+          (let ([can-open (can-open-account account initial-money)]
+                [money-after (money-after-opening account initial-money)]
+                [interest-rate (account->interest-rate account)])
+            (display month)
+            (display can-open)
             (if can-open
-            (a-customer customer-id
-                        month
-                        month
-                        account-type-id
-                        '()
-                        money-after
-                        month
-                        0
-                        interest-rate
-                        interest-rate
-                        0
-                        '()
+                (a-customer customer-id
+                            month
+                            month
+                            account-type-id
+                            '()
+                            money-after
+                            month
+                            0
+                            interest-rate
+                            interest-rate
+                            0
+                            '()
+                            )
+                #f
+                )
             )
-            #f
-            )
+          #f
+          )
       )
     )
   )
-)
 
 (define add-money
   (lambda (customer amount account-types loan-types month)
@@ -146,13 +163,13 @@
     (let ([all-customers (car all-customers-month)]
           [month (cadr all-customers-month)])
       (match command
-        [(list 'time) (cons (pass-time-all all-customers month) (list (+ month 1)))]
+        [(list 'time) (cons (pass-time-all all-customers account-types loan-types month) (list (+ month 1)))]
         [else 
          (cons 
           ; this section returns the new all-customers
           (let ([customer-id (cadr command) ])
             (let ([customer-index (find-customer-index customer-id all-customers)])
-              (if (customer-index)
+              (if customer-index
                   (let ([current-customer (list-ref all-customers customer-index)])
                     (match command
                       [(list 'close _) (remove all-customers current-customer)]
