@@ -23,7 +23,7 @@ account-types
 loan-types
 
 ; '(list-of-all-customers month)
-(define all-customers-month '(() 0)
+(define all-customers-month '(() 0))
 
 (define apply-commands
     (lambda (cs) 
