@@ -1,15 +1,13 @@
 #lang racket
 
+(require (lib "eopl.ss" "eopl"))
 (require "data-types.rkt")
-
-
-(provide (all-defined-out))
 
 (define account->account-id 
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             account-id]
             [else (raise-argument-error 'account->account-id "account-type?" account)]
         )
@@ -20,7 +18,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             bank-fee]
             [else (raise-argument-error 'account->bank-fee "account-type?" account)]
         )
@@ -31,7 +29,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             minimum-deposit]
             [else (raise-argument-error 'account->minimum-deposit "account-type?" account)]
         )
@@ -42,7 +40,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             monthly]
             [else (raise-argument-error 'account->monthly "account-type?" account)]
         )
@@ -53,7 +51,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             period]
             [else (raise-argument-error 'account->period "account-type?" account)]
         )
@@ -64,7 +62,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             renewable]
             [else (raise-argument-error 'account->renewable "account-type?" account)]
         )
@@ -75,7 +73,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             interest-rate]
             [else (raise-argument-error 'account->interest-rate "account-type?" account)]
         )
@@ -86,7 +84,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             credit]
             [else (raise-argument-error 'account->credit "account-type?" account)]
         )
@@ -97,7 +95,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             variability]
             [else (raise-argument-error 'account->variability "account-type?" account)]
         )
@@ -108,7 +106,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             span-for-increase]
             [else (raise-argument-error 'account->span-for-increase "account-type?" account)]
         )
@@ -119,7 +117,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             increase-rate]
             [else (raise-argument-error 'account->increase-rate "account-type?" account)]
         )
@@ -130,7 +128,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             has-cheque]
             [else (raise-argument-error 'account->has-cheque "account-type?" account)]
         )
@@ -141,7 +139,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             has-card]
             [else (raise-argument-error 'account->has-card "account-type?" account)]
         )
@@ -152,7 +150,7 @@
     (lambda (account) 
         (cases account-type account
             [a-account-type 
-            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase has-cheque has-card transfer-fee)
+            (account-id current_account bank-fee minimum-deposit monthly period renewable interest-rate credit variability span-for-increase increase-rate has-cheque has-card transfer-fee)
             transfer-fee]
             [else (raise-argument-error 'account->transfer-fee "account-type?" account)]
         )
