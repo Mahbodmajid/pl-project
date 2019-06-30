@@ -98,7 +98,7 @@
   )
 
 (define is-valid-contract?
-  (lambda my-customer account
+  (lambda (my-customer account month)
     (> (- month (customer->contract-start-month my-customer)) (account->period account))
     )
   )
@@ -108,7 +108,7 @@
     (let ((account-id (customer->account-type-id customer))
           (account (find-account-type account-id account-types)))
       (if account
-          (if (and account->renewable (is-valid-contract? customer account))
+          (if (and account->renewable (is-valid-contract? customer account month))
               (customer-contract-start-month customer month)
               customer)
           (raise-argument-error 'renewal "customer?" my-customer)
@@ -121,17 +121,26 @@
   (lambda (my-debt loan-types)
     (if (my-debt->done)
         0
-        (let ((my-loan (find-loan-type my-debt->loan-type-id loan-types)))
+        (let ((my-loan (find-loan-type (debt->loan-type-id my-debt) loan-types)))
           (loan-type->blocked-money my-loan))
         )
     )
   )
-                        
+
+(define sum
+  (lambda (lst)
+    (if (null? lst)
+        0
+        (+ (car lst) (sum (cdr lst)))
+        )
+    )
+  )
+
 (define sum-of-blocked-money
   (lambda (my-customer loan-type)
     (let ((my-debts (customer->debts my-customer))
           (blocked-money-list (map blocked-money-amount my-debts)))
-      (+ blocked-money-list)
+      (sum blocked-money-list)
       )
     )
   )
@@ -163,7 +172,7 @@
   (lambda (customer amount account-types loan-types month)
     (let ((account-id (customer->account-type-id customer))
           (account (find-account-type account-id account-types))
-          (valid (is-valid-contract? my-customer account)))
+          (valid (is-valid-contract? my-customer account month)))
       (if (account->has-card)
           (if valid
               (let ((free-amount (free-money my-customer account)))
@@ -191,33 +200,41 @@
 
 ; equiv to spend
 (define transfer
-  (lambda (customer amount account-types loan-types month)
+  (lambda (my-customer amount account-types loan-types month)
     (spend customer amount account-types loan-types month)
     )
   )
 
 ; equiv to spend
 (define withdraw
-  (lambda (customer amount account-types loan-types month)
+  (lambda (my-customer amount account-types loan-types month)
     (spend customer amount account-types loan-types month)
     )
   )
 
+(define 
 (define new-loan
-  (lambda (customer loan-type-id account-types loan-types month)
-    customer
+  (lambda (my-customer loan-type-id account-types loan-types month)
+    (let ((loan (find-loan-type loan-type-id loan-types))
+          (minimum-credit (loan-type->minimum-credit loan))
+          (last-loan (loan-type->last-loan loan))
+          (blocking-money (loan-type->blocking-money loan))
+          (account-id (customer->account-type-id customer))
+          (account (find-account-type account-id account-types)))
+      (if (and (>= (customer->credit my-customer) minimum-credit) (>= (free-money my-customer account))))
+      )
     )
   )
 
 (define pay-debt
-  (lambda  (customer amount account-types loan-types month)
-    customer
+  (lambda  (my-customer amount account-types loan-types month)
+    my-customer
     )
   )
 
 (define withdraw-loan
-  (lambda (customer account-types loan-types month)
-    customer
+  (lambda (my-customer account-types loan-types month)
+    my-customer
     )
   )
 
