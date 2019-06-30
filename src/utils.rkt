@@ -4,7 +4,7 @@
 
 (define getbool
   (lambda (str index)
-    (if (eqv? (list-ref (string-split str) index) "true")
+    (if (eq? (list-ref (string-split str) index) "true")
         #t
         #f) 
     )
