@@ -67,7 +67,7 @@
            [month-diff (- current-month start-month)]
            [interest-rate (/ (loan->interest loan-type) 100)]
            [year-diff (floor (/ month-diff 12))])
-      (* (+ 1 (* year-diff interest-rate)) original-debt)
+      (* (+ 1 (* (year-diff+1) interest-rate)) original-debt)
     )
   )
 )
