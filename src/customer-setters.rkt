@@ -8,10 +8,10 @@
     (cases customer my-customer
       [a-customer
             (customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             (a-customer customer-id start-month new-contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             ]
       [else (raise-argument-error 'customer-contract-start-month-setter "customer?" my-customer)]
@@ -24,10 +24,10 @@
     (cases customer my-customer
       [a-customer
             (customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             (a-customer customer-id start-month contract-start-month account-type-id 
-            (cons new-entry history) initial-balance balance last-decrease-month credit
+            (cons new-entry history) initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             ]
       [else (raise-argument-error 'customer-history-setter "customer?" my-customer)]
@@ -40,10 +40,10 @@
     (cases customer my-customer
       [a-customer
             (customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             (a-customer customer-id start-month contract-start-month account-type-id 
-            history initial-balance new-balance last-decrease-month credit
+            history initial-balance new-balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             ]
       [else (raise-argument-error 'customer-balance-setter "customer?" my-customer)]
@@ -56,10 +56,10 @@
     (cases customer my-customer
       [a-customer
             (customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             (a-customer customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance new-last-decrease-month credit
+            history initial-balance balance new-last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             ]
       [else (raise-argument-error 'customer-last-decrease-month-setter "customer?" my-customer)]
@@ -72,13 +72,29 @@
     (cases customer my-customer
       [a-customer
             (customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             (a-customer customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month (+ credit credit-change)
+            history initial-balance balance last-decrease-month (+ credit credit-change) credit-reset-month
             new-interest-rate interest-rate debts)
             ]
       [else (raise-argument-error 'customer-credit-setter "customer?" my-customer)]
+      )
+    )
+  )
+
+(define customer-credit-reset-month-setter
+  (lambda (my-customer new-credit-reset-month)
+    (cases customer my-customer
+      [a-customer
+            (customer-id start-month contract-start-month account-type-id 
+            history initial-balance balance last-decrease-month credit credit-reset-month
+            new-interest-rate interest-rate debts)
+            (a-customer customer-id start-month contract-start-month account-type-id 
+            history initial-balance balance last-decrease-month credit new-credit-reset-month
+            new-interest-rate interest-rate debts)
+            ]
+      [else (raise-argument-error 'customer-credit-reset-month-setter "customer?" my-customer)]
       )
     )
   )
@@ -88,10 +104,10 @@
     (cases customer my-customer
       [a-customer
             (customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             (a-customer customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             (+ new-interest-rate increase-rate) interest-rate debts)
             ]
       [else (raise-argument-error 'customer-new-interest-rate-setter "customer?" my-customer)]
@@ -104,10 +120,10 @@
     (cases customer my-customer
       [a-customer
             (customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             (a-customer customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate changed-interest-rate debts)
             ]
       [else (raise-argument-error 'customer-interest-rate-setter "customer?" my-customer)]
@@ -121,13 +137,14 @@
     (cases customer my-customer
       [a-customer
             (customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate debts)
             (a-customer customer-id start-month contract-start-month account-type-id 
-            history initial-balance balance last-decrease-month credit
+            history initial-balance balance last-decrease-month credit credit-reset-month
             new-interest-rate interest-rate (cons new-debt debts))
             ]
       [else (raise-argument-error 'customer-debts-setter "customer?" my-customer)]
       )
     )
   )
+

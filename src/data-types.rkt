@@ -43,6 +43,7 @@
               ; (blocked-balance number?) computable from debts
               (last-decrease-month number?)
               (credit number?)
+              (credit-reset-month number?)
               (new-interest-rate number?) ;(for variable yearly interest)
               (interest-rate number?)
               (debts (list-of debt?))))
