@@ -48,7 +48,8 @@
               (debts (list-of debt?))))
 
 (define-datatype debt debt?
-  (a-debt (loan-type-id string?)
+  (a-debt (debt-id number?)
+          (loan-type-id string?)
           (start-month number?)
           (paid number?)
           (done boolean?)
