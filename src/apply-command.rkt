@@ -105,7 +105,7 @@
     
 (define renewal
   (lambda (customer account-types loan-types month)
-    (let ((account-id (customer->account-type-id customer))
+    (let* ((account-id (customer->account-type-id customer))
           (account (find-account-type account-id account-types)))
       (if account
           (if (and account->renewable (is-valid-contract? customer account month))
@@ -138,7 +138,7 @@
 
 (define sum-of-blocked-money
   (lambda (my-customer loan-type)
-    (let ((my-debts (customer->debts my-customer))
+    (let* ((my-debts (customer->debts my-customer))
           (blocked-money-list (map blocked-money-amount my-debts)))
       (sum blocked-money-list)
       )
@@ -153,7 +153,7 @@
 
 (define write-cheque
   (lambda (my-customer amount account-types loan-types month)
-    (let ((account-id (customer->account-type-id customer))
+    (let* ((account-id (customer->account-type-id customer))
           (account (find-account-type account-id account-types)))
       (if (account->has-cheque)
           (let ((free-amount (free-money my-customer account)))
@@ -170,7 +170,7 @@
 
 (define spend
   (lambda (customer amount account-types loan-types month)
-    (let ((account-id (customer->account-type-id customer))
+    (let* ((account-id (customer->account-type-id customer))
           (account (find-account-type account-id account-types))
           (valid (is-valid-contract? my-customer account month)))
       (if (account->has-card)
@@ -212,23 +212,87 @@
     )
   )
 
-(define 
+(define last-duration
+  (lambda (debts next-month last-loan)
+    (cond
+    [(null? debts) #t]
+    [else (if (last-duration (cdr debts) next-month last-loan)
+    (if (= (debt->start-month (car debts)) first-month)
+        #t
+        (>= next-month (+ (debt->start-month (car debts)) last-loan))
+     #f) 
+    )]
+    )
+  )
+)
+  
 (define new-loan
   (lambda (my-customer loan-type-id account-types loan-types month)
-    (let ((loan (find-loan-type loan-type-id loan-types))
+    (let* ((loan (find-loan-type loan-type-id loan-types))
           (minimum-credit (loan-type->minimum-credit loan))
           (last-loan (loan-type->last-loan loan))
           (blocking-money (loan-type->blocking-money loan))
           (account-id (customer->account-type-id customer))
           (account (find-account-type account-id account-types)))
-      (if (and (>= (customer->credit my-customer) minimum-credit) (>= (free-money my-customer account))))
+      (if (and (>= (customer->credit my-customer) minimum-credit) (>= (free-money my-customer account) blocking-money) (last-duration (customer->debts my-customer) (+ 1 month) last-loan))
+          (customer-debts-setter my-customer (my-debt (debt loan-type-id (+ month 1)) 0 #f #f))
+          my-customer
       )
     )
   )
 
+
+(define compare
+(lambda (debt1 debt2)
+ (let* ((debt1-start-month (debt->start-month loan1))
+       (debt2-start-month (debt->start-month loan2))
+       (loan1-id (debt->load-type-id loan1))
+       (loan2-id (debt->load-type-id loan2))
+       (loan1 (find-loan-type loan1-id loan-types))
+       (loan2 (find-loan-type loan2-id loan-types))
+       (return-time1 (+ debt1-start-month (loan-type->return-span loan1)))
+       (return-time2 (+ debt2-start-month (loan-type->return-span loan2)))
+       )
+   (> return-time1 return-time2)
+  )
+ )
+)
+  
+
+(define do-debt-filter
+  (lambda (list-of-debts current-month)
+    (filter (lambda (debt)
+              (and (not (debt->done debt)) (>= current-month (debt->start-month debt)))
+              )
+            list-of-debts
+      )
+ )
+)  
+                                 
+  
 (define pay-debt
   (lambda  (my-customer amount account-types loan-types month)
-    my-customer
+    (let* ((filtered-debt (do-debt-filter (customer->debts my-customer) month))
+           (sorted (sort filtered-debt compare)))
+      (cond
+        [(null? sorted) my-customer]
+        [else
+         (let* ((my-debt (car sorted))
+                (remaining (debt->remaining my-debt (find-loan-type (debt->loan-type-id my-debt) loan-types) month))
+                (account-id (customer->account-type-id customer))
+                (account (find-account-type account-id account-types))
+                (free-amount (free-money my-customer acount)))
+           (begin
+             (if (> amount free-amount)
+                 my-customer
+                 (let* ((new-amount (min amount remaining))
+                   (new-customer (customer-balance-setter my-customer (- (customer->balance my-customer) new-amount)))
+                   (new-customer2 (debt->paid my-debt)))
+                   ))
+             )
+           )
+         ]
+        )
     )
   )
 
