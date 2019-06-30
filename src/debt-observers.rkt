@@ -47,3 +47,24 @@
       )
     )
   )
+
+
+(define debt->total-debt
+  (lambda (dbt loan-type current-month)
+    (let* ([original-debt (loan->loan-amount loan-type)]
+           [start-month (debt->start-month dbt)]
+           [month-diff (- current-month start-month)]
+           [interest-rate (/ (loan->interest loan-type) 100)]
+           [year-diff (floor (/ month-diff 12))])
+      (* (+ 1 (* year-diff interest-rate)) original-debt)
+    )
+  )
+)
+
+(define debt->remaining
+  (lambda (dbt loan-type current-month)
+    (let ([tot-remaining (debt->total-debt dbt loan-type current-month)]
+          [paid (debt->paid dbt)])
+      (- tot-remaining paid))
+  )
+)
